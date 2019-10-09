@@ -1,0 +1,83 @@
+public class UserInterface {
+private static UserInterface userInterface;
+private static final int SIGNUP_DONOR;
+	private static final int ADD_CCARD ;
+	private static final int MAKE_DONATION ;
+	private static final int LIST_ALLNGO;
+	private static final int SEARCH_DONOR;
+private UserInterface() {
+if (yesOrNo("Look for saved data and  use it?")) {
+retrieve();
+} else {
+donation = Donation.instance();
+}
+}
+public static UserInterface instance() {
+if (userInterface == null) {
+return userInterface = new UserInterface();
+} else {
+return userInterface;
+}
+}
+public Calendar getDate(String prompt) {
+do {
+try {
+Calendar date = new GregorianCalendar();
+String item = getToken(prompt);
+DateFormat dateFormat = SimpleDateFormat.getDateInstance(DateFormat.SHORT);
+date.setTime(dateFormat.parse(item));
+return date;
+} catch (Exception fe) {
+System.out.println("Please input a date as mm/dd/yy");
+}
+} while (true);
+}
+public void signupDonor() {
+String name = getToken("Enter member name");
+String phone = getToken("Enter phone");
+Donor result;
+result = donation.addDonor(name, phone);
+if (result == null) {
+System.out.println("Could not add member");
+}
+System.out.println(result);
+}
+public void addCCard() {
+CreditCard result;
+Donor result2;
+do {
+result2 = donation.searchDonor(donorId);
+if (result2 != null) {
+String cardNumber = getToken("Enter credit card");
+String amount = getToken("Enter amount");
+result = donation.addCard(donorId, cardNumber, amount);
+public void makeDonation() {
+double result = donation.processDonation();
+System.out.println("Total donation amount: " + result);
+}
+public void process() {
+int command;
+
+switch (command) {
+case SIGNUP_DONOR:
+signupDonor();
+break;
+case ADD_CCARD:
+addCCard();
+break;
+case MAKE_DONATION:
+processDonation();
+break;
+case SEARCH_DONOR:
+searchDonor();
+break;
+
+
+}
+}
+
+
+public static void main(String[] args) {
+UserInterface.instance().process();
+}
+}
